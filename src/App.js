@@ -5,14 +5,19 @@ import styled from "styled-components";
 
 function App() {
     return (
-        <Router>
-            <StyledLinkWrap>
-                <StyledLink to="/board">게시판</StyledLink>
-            </StyledLinkWrap>
-            <Switch>
-                <Route path="/board" component={Board}></Route>
-            </Switch>
-        </Router>
+        <AllWrap>
+            <Router>
+                <StyledLinkWrap>
+                    <StyledLink to="/board">게시판(리덕스사용X)</StyledLink>
+                    {/* <StyledLink to="/board-redux">
+                        게시판(리덕스사용O)
+                    </StyledLink> */}
+                </StyledLinkWrap>
+                <Switch>
+                    <Route path="/board" component={Board}></Route>
+                </Switch>
+            </Router>
+        </AllWrap>
     );
 }
 
@@ -31,4 +36,10 @@ const StyledLink = styled(Link)`
     color: #fff;
     padding: 10px;
     text-decoration: none;
+`;
+
+const AllWrap = styled.div`
+    border: 1px solid blue;
+    max-width: 1440px;
+    margin: auto;
 `;
