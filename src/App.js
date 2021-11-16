@@ -1,6 +1,7 @@
 import React from "react";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
-import Board from "routes/board/board";
+import BoardContent from "routes/board-content/BoardContent";
+import Board from "routes/board/Board";
 import styled from "styled-components";
 
 function App() {
@@ -14,7 +15,12 @@ function App() {
                     </StyledLink> */}
                 </StyledLinkWrap>
                 <Switch>
-                    <Route path="/board" component={Board}></Route>
+                    <Route exact path="/board" component={Board}></Route>
+                    <Route
+                        exact
+                        path="/board/:id"
+                        component={BoardContent}
+                    ></Route>
                 </Switch>
             </Router>
         </AllWrap>
