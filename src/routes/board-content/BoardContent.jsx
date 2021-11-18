@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 
 const BoardContent = ({ location }) => {
     const history = useHistory();
@@ -8,13 +10,15 @@ const BoardContent = ({ location }) => {
         history.goBack();
     };
 
+    const params = useParams();
+    console.log(params);
+
     const [tableContentData, setTableContentData] = useState({});
     useEffect(() => {
         if (location.state === undefined) {
             alert("해당되는 페이지가 없습니다.");
             goBackPage();
         } else {
-            // setTableContentData(value);
             const data = location.state.value;
             setTableContentData(data);
         }
@@ -38,6 +42,7 @@ const BoardContent = ({ location }) => {
                     </tr>
                 </tbody>
             </TableContentTable>
+            <Link to={`/board/${params.id}/update`}>수장하기</Link>
         </div>
     );
 };

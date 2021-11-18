@@ -1,7 +1,9 @@
 import React from "react";
 import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import BoardContent from "routes/board-content/BoardContent";
+import BoardUpdate from "routes/board-update/BoardUpdate";
 import Board from "routes/board/Board";
+import BoardWrite from "routes/boardWrite/BoardWrite";
 import styled from "styled-components";
 
 function App() {
@@ -9,7 +11,9 @@ function App() {
         <AllWrap>
             <Router>
                 <StyledLinkWrap>
-                    <StyledLink to="/board">게시판(리덕스사용X)</StyledLink>
+                    <StyledLink to="/board">
+                        게시판(리덕스 및 리액트 훅 폼 사용 x)
+                    </StyledLink>
                     {/* <StyledLink to="/board-redux">
                         게시판(리덕스사용O)
                     </StyledLink> */}
@@ -20,6 +24,16 @@ function App() {
                         exact
                         path="/board/:id"
                         component={BoardContent}
+                    ></Route>
+                    <Route
+                        exact
+                        path="/board-write"
+                        component={BoardWrite}
+                    ></Route>
+                    <Route
+                        exact
+                        path="/board/:id/update"
+                        component={BoardUpdate}
                     ></Route>
                 </Switch>
             </Router>

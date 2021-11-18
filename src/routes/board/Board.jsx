@@ -8,7 +8,7 @@ const Board = () => {
     const [tableData, setTableData] = useState([]);
     const [initTableData, setInitTableData] = useState([]);
     const [currnetPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(5);
+    const [postPerPage, setPostPerPage] = useState(30);
 
     const indexOfLast = currnetPage * postPerPage; //  1 * 10 = 10
     const indexOfFirst = indexOfLast - postPerPage; // 10 - 10 = 0
@@ -30,7 +30,7 @@ const Board = () => {
         const getDate = async () => {
             try {
                 const response = await axios.get(
-                    "https://raw.githubusercontent.com/pleasemrlostman/board-practice-front/main/src/assets/json/data.json"
+                    "http://192.168.0.21:3000/api/v1/posts"
                 );
                 setTableData(response.data);
             } catch (e) {
@@ -91,7 +91,7 @@ const Board = () => {
                 }}
             ></Pagination>
             <TableButtonWrap>
-                <button>글 작성하기</button>
+                <LinkButton to="/board-write">글 작성하기</LinkButton>
             </TableButtonWrap>
         </div>
     );
@@ -148,4 +148,11 @@ const StyledLink = styled(Link)`
         background-color: #171717;
         color: #fff;
     }
+`;
+
+const LinkButton = styled(Link)`
+    background-color: #5838ee;
+    color: #fff;
+    text-decoration: none;
+    height: 1rem;
 `;
