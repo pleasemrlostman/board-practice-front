@@ -4,21 +4,23 @@ import BoardContent from "routes/board-content/BoardContent";
 import BoardUpdate from "routes/board-update/BoardUpdate";
 import Board from "routes/board/Board";
 import BoardWrite from "routes/boardWrite/BoardWrite";
+import Main from "routes/main/Main";
 import styled from "styled-components";
 
 function App() {
     return (
         <AllWrap>
             <Router>
-                <StyledLinkWrap>
+                {/* <StyledLinkWrap>
                     <StyledLink to="/board">
                         게시판(리덕스 및 리액트 훅 폼 사용 x)
                     </StyledLink>
-                    {/* <StyledLink to="/board-redux">
+                    <StyledLink to="/board-redux">
                         게시판(리덕스사용O)
-                    </StyledLink> */}
-                </StyledLinkWrap>
+                    </StyledLink>
+                </StyledLinkWrap> */}
                 <Switch>
+                    <Route exact path="/" component={Main}></Route>
                     <Route exact path="/board" component={Board}></Route>
                     <Route
                         exact

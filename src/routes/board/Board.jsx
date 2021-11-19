@@ -9,7 +9,6 @@ const Board = () => {
     const [initTableData, setInitTableData] = useState([]);
     const [currnetPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(30);
-
     const indexOfLast = currnetPage * postPerPage; //  1 * 10 = 10
     const indexOfFirst = indexOfLast - postPerPage; // 10 - 10 = 0
 
@@ -92,6 +91,7 @@ const Board = () => {
             ></Pagination>
             <TableButtonWrap>
                 <LinkButton to="/board-write">글 작성하기</LinkButton>
+                <button>로그인하기</button>
             </TableButtonWrap>
         </div>
     );
