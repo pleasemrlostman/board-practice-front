@@ -2,10 +2,11 @@ import React from "react";
 import { useEffect, useState } from "react/cjs/react.development";
 import axios from "axios";
 import { useParams } from "react-router";
+import { useHistory } from "react-router";
+import styled from "styled-components";
 
 const BoardUpdate = () => {
     const params = useParams();
-    console.log(params);
     const [data, setData] = useState({});
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -13,9 +14,9 @@ const BoardUpdate = () => {
         title: title,
         content: content,
         count: 0,
-        // pno: parseInt(params.id),
     });
 
+    const history = useHistory();
     const titleChange = (e) => {
         const {
             target: { value },
@@ -50,6 +51,8 @@ const BoardUpdate = () => {
                     postData
                 )
                 .then((response) => {
+                    alert("수정이 완료됐습니다!");
+                    history.push("/board");
                     console.log(response);
                 });
         } catch (e) {
@@ -65,10 +68,12 @@ const BoardUpdate = () => {
                     data.pno
                 )
                 .then((response) => {
+                    alert("삭제가 완료됐습니다!");
+                    history.push("/board");
                     console.log(response);
                 });
         } catch (e) {
-            // console.log(e);
+            console.log(e);
         }
     };
 
@@ -78,10 +83,10 @@ const BoardUpdate = () => {
                 const response = await axios.get(
                     `http://192.168.0.21:3000/api/v1/posts/${params.id}`
                 );
-                console.log(response.data);
                 setData(response.data);
                 setTitle(response.data.title);
                 setContent(response.data.content);
+                setPostData(response.data);
             } catch (e) {
                 console.log(e);
             }
@@ -91,7 +96,7 @@ const BoardUpdate = () => {
 
     return (
         <>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} style={{ marginBottom: "20px" }}>
                 <input
                     type="text"
                     placeholder="제목을 입력해주세요"
@@ -106,9 +111,20 @@ const BoardUpdate = () => {
                 />
                 <input type="submit" value="전송하기" />
             </form>
-            <button onClick={deleteBoard}>삭제하기</button>
+            <BTN onClick={deleteBoard}>삭제하기</BTN>
         </>
     );
 };
 
 export default BoardUpdate;
+
+const BTN = styled.button`
+    display: block;
+    width: fit-content;
+    background-color: #337aee;
+    padding: 0.25rem;
+    border: 1px solid #337aee;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+`;

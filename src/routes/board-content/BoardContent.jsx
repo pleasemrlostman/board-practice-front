@@ -1,28 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
+import axios from "axios";
 
 const BoardContent = ({ location }) => {
     const history = useHistory();
     const goBackPage = () => {
         history.goBack();
     };
-
     const params = useParams();
-    console.log(params);
-
     const [tableContentData, setTableContentData] = useState({});
+    let boardIndex = params.id;
     useEffect(() => {
-        if (location.state === undefined) {
+        if (boardIndex === undefined) {
             alert("해당되는 페이지가 없습니다.");
             goBackPage();
         } else {
-            const data = location.state.value;
+            const data = boardIndex;
+            const getDate = async () => {
+                try {
+                    const response = await axios.get(
+                        `http://192.168.0.21:3000/api/v1/posts/${data}`
+                    );
+                    setTableContentData(response.data);
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+            getDate();
             setTableContentData(data);
         }
     }, []);
+
+    const deleteBoard = async () => {
+        console.log(boardIndex);
+        try {
+            axios
+                .delete(
+                    `http://192.168.0.21:3000/api/v1/posts/${boardIndex}`,
+                    tableContentData.pno
+                )
+                .then((response) => {
+                    alert("삭제가 완료됐습니다!");
+                    history.push("/board");
+                });
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     return (
         <div>
@@ -42,7 +68,10 @@ const BoardContent = ({ location }) => {
                     </tr>
                 </tbody>
             </TableContentTable>
-            <Link to={`/board/${params.id}/update`}>수장하기</Link>
+            <BtnWrap>
+                <BTN to={`/board/${params.id}/update`}>수정하기</BTN>
+                <BTN onClick={deleteBoard}>삭제하기</BTN>
+            </BtnWrap>
         </div>
     );
 };
@@ -64,4 +93,21 @@ const TableContentTable = styled.table`
             text-align: center;
         }
     }
+`;
+
+const BtnWrap = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+`;
+
+const BTN = styled(Link)`
+    display: block;
+    width: fit-content;
+    background-color: #337aee;
+    padding: 0.25rem;
+    border: 1px solid #337aee;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
 `;
