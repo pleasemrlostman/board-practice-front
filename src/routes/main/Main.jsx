@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { loginChange } from "modules/login/login";
 
 const Main = () => {
     const dispatch = useDispatch();
-    const loginActive = useSelector((state) => state.loginChangeReducer);
+    const loginActive = useSelector(
+        (state) => state.loginChangeReducer,
+        shallowEqual
+    );
     console.log("지금 로그인 상태값은?" + loginActive);
 
     const LoginButton = () => {

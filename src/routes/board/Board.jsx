@@ -91,7 +91,6 @@ const Board = () => {
             ></Pagination>
             <TableButtonWrap>
                 <LinkButton to="/board-write">글 작성하기</LinkButton>
-                <button>로그인하기</button>
             </TableButtonWrap>
         </div>
     );
