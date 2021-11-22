@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { loginChange } from "modules/login/login";
 import BoardContent from "routes/board-content/BoardContent";
@@ -7,6 +7,7 @@ import BoardUpdate from "routes/board-update/BoardUpdate";
 import Board from "routes/board/Board";
 import BoardWrite from "routes/boardWrite/BoardWrite";
 import Main from "routes/main/Main";
+import Social from "routes/oauth/callback/Social";
 import styled from "styled-components";
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
                         path="/board/:id/update"
                         component={BoardUpdate}
                     ></Route>
+                    <Route exact path="/api/v1/auth" component={Social}></Route>
                 </Switch>
             </Router>
         </AllWrap>

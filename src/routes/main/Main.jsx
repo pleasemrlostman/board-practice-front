@@ -17,14 +17,18 @@ const Main = () => {
 
     return (
         <StyledMain>
-            {/* <a href="#">로그인</a> */}
-            <button
-                onClick={() => {
-                    LoginButton();
-                }}
+            <a
+                href="https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code"
+                role="button"
             >
-                로그인
-            </button>
+                KakaoLogin 8000
+            </a>
+            <a
+                href="http://192.168.0.21:3000/oauth2/authorization/kakao"
+                role="button"
+            >
+                KakaoLogin 3000
+            </a>
         </StyledMain>
     );
 };
@@ -35,6 +39,7 @@ const StyledMain = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     button,
     a {
         width: 20%;
