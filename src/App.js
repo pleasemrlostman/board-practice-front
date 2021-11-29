@@ -11,21 +11,9 @@ import Social from "routes/oauth/callback/Social";
 import styled from "styled-components";
 
 function App() {
-    const loginActive = useSelector(
-        (state) => state.loginChangeReducer,
-        shallowEqual
-    );
-    const dispatch = useDispatch();
-    const logout = () => {
-        dispatch(loginChange(false));
-    };
-
     return (
         <AllWrap>
             <Router>
-                <div>
-                    <button onClick={logout}>로그아웃</button>
-                </div>
                 {/* <StyledLinkWrap>
                     <StyledLink to="/board">
                         게시판(리덕스 및 리액트 훅 폼 사용 x)
@@ -35,11 +23,8 @@ function App() {
                     </StyledLink>
                 </StyledLinkWrap> */}
                 <Switch>
-                    {loginActive === true ? (
-                        <Route exact path="/" component={Board}></Route>
-                    ) : (
-                        <Route exact path="/" component={Main}></Route>
-                    )}
+                    <Route exact path="/" component={Main}></Route>
+                    <Route exact path="/board/" component={Board}></Route>
                     <Route
                         exact
                         path="/board/:id"
@@ -63,7 +48,6 @@ function App() {
 }
 
 export default App;
-
 const StyledLinkWrap = styled.div`
     border: 1px solid red;
     display: flex;

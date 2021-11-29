@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 const Board = () => {
     const [tableData, setTableData] = useState([]);
@@ -22,15 +23,22 @@ const Board = () => {
     for (let i = 1; i <= Math.ceil(tableData.length / postPerPage); i++) {
         pageNumbers.push(i);
     }
-    console.log(tableData);
-    console.log(pageNumbers);
+    const accessToken = useSelector((state) => state.loginChangeReducer);
 
     useEffect(() => {
         const getDate = async () => {
+            console.log(accessToken);
+            console.log(accessToken.data);
             try {
-                const response = await axios.get(
-                    "http://192.168.0.21:3000/api/v1/posts"
-                );
+                const response = await axios
+                    .get("http://login.test.com:8080/api/v1/posts", {
+                        headers: {
+                            Authorization: accessToken.data,
+                        },
+                    })
+                    .then(() => {
+                        console.log("hello world!");
+                    });
                 setTableData(response.data);
             } catch (e) {
                 console.log(e);

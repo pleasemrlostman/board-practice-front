@@ -7,7 +7,7 @@ const loginChange = (login) => {
     };
 };
 
-const loginChangeReducer = (state = false, action) => {
+const loginChangeReducer = (state = null, action) => {
     switch (action.type) {
         case LOGIN:
             return action.login;

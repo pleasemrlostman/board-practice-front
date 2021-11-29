@@ -1,20 +1,30 @@
 import axios from "axios";
 import React, { useEffect } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
+import { loginChange } from "modules/login/login";
+import { useHistory } from "react-router";
+
 const Social = () => {
     let code = new URL(window.location.href).searchParams.get("code");
-    console.log(code);
+    const dispatch = useDispatch();
+
+    const history = useHistory();
+
     useEffect(() => {
         axios
-            .get(`http://192.168.0.21:8080/api/v1/auth?code=${code}`)
+            .get(`http://login.test.com:8080/api/v1/auth?code=${code}`)
             .then((res) => {
-                console.log(res);
-                const ACCESS_TOKEN = res.data.accessToken;
-                console.log(ACCESS_TOKEN);
+                return res;
+            })
+            .then((token) => {
+                dispatch(loginChange(token));
+                history.push("/board");
             })
             .catch((error) => console.log(error));
     }, [code]);
 
-    return <div>왜안되는걸까요</div>;
+    return <div>로딩중</div>;
 };
 
 export default Social;
