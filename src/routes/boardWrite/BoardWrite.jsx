@@ -50,7 +50,7 @@ const BoardWrite = () => {
     const post = async () => {
         try {
             axios
-                .post("http://localhost:8080/api/v1/posts", postData, {config})
+                .post("http://localhost:8080/api/v1/posts", postData, config)
                 .then((response) => {
                     console.log(response);
                 })
