@@ -10,10 +10,14 @@ const Social = () => {
     const dispatch = useDispatch();
 
     const history = useHistory();
+    console.log("token")
 
     useEffect(() => {
+        let config = {
+            headers: {'Access-Control-Allow-Origin': '*'},
+        };
         axios
-            .get(`http://login.test.com:8080/api/v1/auth?code=${code}`)
+            .get(`http://localhost:8080/api/v1/auth?code=${code}`, config)
             .then((res) => {
                 return res;
             })

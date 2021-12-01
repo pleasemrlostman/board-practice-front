@@ -24,22 +24,20 @@ const Board = () => {
         pageNumbers.push(i);
     }
     const accessToken = useSelector((state) => state.loginChangeReducer);
-
     useEffect(() => {
-        const getDate = async () => {
-            console.log(accessToken);
-            console.log(accessToken.data);
+        let config = {
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                "Authorization" : accessToken.data ,
+            },
+        };
+        const getDate = async () => {            
             try {
                 const response = await axios
-                    .get("http://login.test.com:8080/api/v1/posts", {
-                        headers: {
-                            Authorization: accessToken.data,
-                        },
-                    })
-                    .then(() => {
-                        console.log("hello world!");
-                    });
-                setTableData(response.data);
+                .get("http://localhost:8080/api/v1/posts", config)
+                .then((response) => {
+                    setTableData(response.data);
+                });
             } catch (e) {
                 console.log(e);
             }

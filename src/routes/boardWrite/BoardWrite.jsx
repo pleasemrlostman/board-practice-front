@@ -1,11 +1,11 @@
-import React from "react";
-import { useEffect, useState } from "react/cjs/react.development";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
+
 
 const BoardWrite = () => {
     const history = useHistory();
-
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [postData, setPostData] = useState({
@@ -38,6 +38,9 @@ const BoardWrite = () => {
         e.preventDefault();
         post();
     };
+
+    // const accessToken = useSelector((state) => state.loginChangeReducer);
+
 
     const post = async () => {
         try {
