@@ -38,14 +38,19 @@ const BoardWrite = () => {
         e.preventDefault();
         post();
     };
-
-    // const accessToken = useSelector((state) => state.loginChangeReducer);
-
+    
+    const accessToken = useSelector((state) => state.loginChangeReducer);
+    let config = {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            "Authorization" : accessToken.data ,
+        },
+    };
 
     const post = async () => {
         try {
             axios
-                .post("http://192.168.0.21:3000/api/v1/posts", postData)
+                .post("http://localhost:8080/api/v1/posts", postData, {config})
                 .then((response) => {
                     console.log(response);
                 })
