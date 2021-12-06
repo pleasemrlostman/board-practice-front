@@ -38,7 +38,8 @@ const Social = () => {
                 }
             })
             .then(() => {
-                dispatch(loginChange(cookies));
+                // 리턴값부재
+                dispatch(loginChange(true));
                 history.push("/board");
             })
             .catch((error) => console.log(error));
