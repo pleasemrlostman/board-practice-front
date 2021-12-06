@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
 
 
 const BoardWrite = () => {
@@ -40,10 +41,11 @@ const BoardWrite = () => {
     };
     
     const accessToken = useSelector((state) => state.loginChangeReducer);
+    const [cookies] = useCookies(["login"]);
     let config = {
         headers: {
             'Access-Control-Allow-Origin': '*',
-            "Authorization" : accessToken.data ,
+            "Authorization" : cookies.login.data ,
         },
     };
 

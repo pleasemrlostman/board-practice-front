@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const BoardUpdate = () => {
     const params = useParams();
@@ -31,7 +32,6 @@ const BoardUpdate = () => {
         const {
             target: { value },
         } = e;
-        console.log(value);
         setContent(value);
         setPostData((prev) => {
             return { ...prev, content: value };
@@ -43,13 +43,20 @@ const BoardUpdate = () => {
         dataUpdate();
     };
 
+    const accessToken = useSelector((state) => state.loginChangeReducer);
+    let config = {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            "Authorization" : accessToken.data ,
+        },
+    };
+
+
     const dataUpdate = async () => {
         try {
             axios
                 .put(
-                    `http://192.168.0.21:3000/api/v1/posts/${params.id}`,
-                    postData
-                )
+                    `http://localhost:8080/api/v1/posts/${params.id}`, postData, config)
                 .then((response) => {
                     alert("수정이 완료됐습니다!");
                     history.push("/board");

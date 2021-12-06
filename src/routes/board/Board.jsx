@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { Cookies, CookiesProvider, useCookies } from "react-cookie";
 
 const Board = () => {
     const [tableData, setTableData] = useState([]);
@@ -23,14 +25,23 @@ const Board = () => {
     for (let i = 1; i <= Math.ceil(tableData.length / postPerPage); i++) {
         pageNumbers.push(i);
     }
+    const history = useHistory();
     const accessToken = useSelector((state) => state.loginChangeReducer);
+    const [cookies, setCookie, removeCookie] = useCookies(["login"]);
+
     useEffect(() => {
-        let config = {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                "Authorization" : accessToken.data ,
-            },
-        };
+        let config = {}
+        if(cookies === null) {
+            alert("로그인해라 세훈아")
+            history.push("/")
+        } else {
+            config = {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    "Authorization" : cookies.login.data ,
+                },
+            };
+        }
         const getDate = async () => {            
             try {
                 const response = await axios
@@ -75,7 +86,7 @@ const Board = () => {
                                         {value.title}
                                     </StyledLink>
                                 </td>
-                                <td>{value.id}</td>
+                                <td>{value.user.email}</td>
                                 <td>{value.createdDate}</td>
                                 <td>{value.modifiedDate}</td>
                                 <td>{value.count}</td>

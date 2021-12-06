@@ -21,7 +21,7 @@ const BoardContent = ({ location }) => {
             const getDate = async () => {
                 try {
                     const response = await axios.get(
-                        `http://192.168.0.21:3000/api/v1/posts/${data}`
+                        `http://localhost:8080/api/v1/posts/${data}`
                     );
                     setTableContentData(response.data);
                 } catch (e) {
@@ -38,12 +38,12 @@ const BoardContent = ({ location }) => {
         try {
             axios
                 .delete(
-                    `http://192.168.0.21:3000/api/v1/posts/${boardIndex}`,
+                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
                     tableContentData.pno
                 )
                 .then((response) => {
+                    history.push("/");
                     alert("삭제가 완료됐습니다!");
-                    history.push("/board");
                 });
         } catch (e) {
             console.log(e);

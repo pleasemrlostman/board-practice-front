@@ -9,8 +9,6 @@ const Main = () => {
         (state) => state.loginChangeReducer,
         shallowEqual
     );
-    console.log("지금 로그인 상태값은?" + loginActive);
-
     const LoginButton = () => {
         dispatch(loginChange(true));
     };
@@ -18,17 +16,24 @@ http://login.test.com:3000/
     return (
         <StyledMain>
             <a
-                href="https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code"
+                href="https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&state=kakao"
                 role="button"
             >
-                KakaoLogin 8000
+                KakaoLogin
             </a>
             <a
-                href="http://192.168.0.21:3000/oauth2/authorization/kakao"
+                href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=_I5ydV36uupFgCHdJ_1x&redirect_uri=http://localhost:3000/api/v1/auth&state=naver"
                 role="button"
             >
-                KakaoLogin 3000
+                NaverLogin
             </a>
+            <a
+                href="https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&access_type=offline"
+                role="button"
+            >
+                GoogleLogin
+            </a>
+        
         </StyledMain>
     );
 };
