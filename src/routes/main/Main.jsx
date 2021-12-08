@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { loginChange } from "modules/login/login";
+import { useCookies, setCookie } from "react-cookie";
+
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -12,9 +14,15 @@ const Main = () => {
     const LoginButton = () => {
         dispatch(loginChange(true));
     };
-http://login.test.com:3000/
+    const [cookies] = useCookies(["login"]);
+    console.log(cookies.login);
+
     return (
-        <StyledMain>
+        <>
+        {
+            cookies.login === undefined 
+            ?         
+            <StyledMain>
             <a
                 href="https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&state=kakao"
                 role="button"
@@ -35,6 +43,9 @@ http://login.test.com:3000/
             </a>
         
         </StyledMain>
+         : <div>로그인!</div>
+        }
+        </>
     );
 };
 

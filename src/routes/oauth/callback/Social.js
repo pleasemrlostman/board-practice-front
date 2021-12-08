@@ -11,6 +11,11 @@ import { useCookies  } from "react-cookie";
 const Social = () => {
     let code = new URL(window.location.href).searchParams.get("code");
     let sns = new URL(window.location.href).searchParams.get("state");
+    
+    let now = new Date();
+    let after1m = new Date();
+
+
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -27,8 +32,11 @@ const Social = () => {
             })
             .then((token) => {
                 if(token) {
-                    setCookie("login", token ,{
+                    after1m.setMinutes(now.getMinutes() + 10);
+                    console.log(after1m);
+                    setCookie("login", token , {
                         path: "/",
+                        expires: after1m,
                         httpOnly: false,
                     });
                     alert("로그인 성공 !!!!");
@@ -40,7 +48,8 @@ const Social = () => {
             .then(() => {
                 // 리턴값부재
                 dispatch(loginChange(true));
-                history.push("/board");
+                // history.push("/board");
+                window.location.replace("/board")
             })
             .catch((error) => console.log(error));
     }, [code]);

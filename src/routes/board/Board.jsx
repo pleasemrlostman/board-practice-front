@@ -29,8 +29,24 @@ const Board = () => {
     const accessToken = useSelector((state) => state.loginChangeReducer);
     const [cookies, setCookie, removeCookie] = useCookies(["login"]);
 
+
+    
+    let now = new Date();
+    let yesterday = new Date();
+
+    const sighOut =  () => {
+        yesterday.setDate(now.getDate() - 1);
+        removeCookie("login", null , {
+            path: "/",
+            expires: yesterday,
+            httpOnly: false,
+        });
+        window.location.replace("/");
+    }
+
+
     useEffect(() => {
-        let config = {}
+        let config = {};
         if(cookies === null) {
             alert("로그인해라 세훈아")
             history.push("/")
@@ -47,6 +63,11 @@ const Board = () => {
                 const response = await axios
                 .get("http://localhost:8080/api/v1/posts", config)
                 .then((response) => {
+                    console.log("헤더확인하자");
+                    console.log(response.data);
+
+                    {response.headers.status === "tokenInvalid" ? sighOut() : console.log("인벨리드아님")}
+
                     setTableData(response.data);
                 });
             } catch (e) {
@@ -69,7 +90,7 @@ const Board = () => {
                         <th>조회수</th>
                     </tr>
                 </thead>
-                <tbody>
+                {/* <tbody>
                     {currentPosts(tableData).map((value, index) => {
                         return (
                             <tr key={index}>
@@ -93,7 +114,7 @@ const Board = () => {
                             </tr>
                         );
                     })}
-                </tbody>
+                </tbody> */}
             </FrontTable>
             <Pagination
                 itemClass={"pagination__li"}

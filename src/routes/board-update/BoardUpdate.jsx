@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { useCookies, setCookie } from "react-cookie";
+
 
 const BoardUpdate = () => {
     const params = useParams();
@@ -16,6 +18,23 @@ const BoardUpdate = () => {
         content: content,
         count: 0,
     });
+    const [config, setConfig] = useState({});
+    const [cookies, removeCookie] = useCookies(["login"]);
+
+    useEffect(() => {
+        if(cookies.login !== undefined) {
+            setConfig(
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        "Authorization" : cookies.login.data ,
+                    },
+                }
+            )
+
+        }
+    }
+    , [])
 
     const history = useHistory();
     const titleChange = (e) => {
@@ -44,12 +63,6 @@ const BoardUpdate = () => {
     };
 
     const accessToken = useSelector((state) => state.loginChangeReducer);
-    let config = {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            "Authorization" : accessToken.data ,
-        },
-    };
 
 
     const dataUpdate = async () => {

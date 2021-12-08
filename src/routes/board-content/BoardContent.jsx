@@ -3,8 +3,18 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useParams, useHistory } from "react-router";
 import axios from "axios";
+import { useCookies, setCookie } from "react-cookie";
+import jwt_decode from "jwt-decode";
+
 
 const BoardContent = ({ location }) => {
+
+    const [cookies, removeCookie] = useCookies(["login"]);
+    const [decode, setDecode] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [realConfig, setRealConfig] = useState({})
+    console.log(cookies);
+
     const history = useHistory();
     const goBackPage = () => {
         history.goBack();
@@ -12,18 +22,28 @@ const BoardContent = ({ location }) => {
     const params = useParams();
     const [tableContentData, setTableContentData] = useState({});
     let boardIndex = params.id;
+    let config = {};
     useEffect(() => {
+        setDecode(jwt_decode(cookies.login.data));
         if (boardIndex === undefined) {
             alert("해당되는 페이지가 없습니다.");
             goBackPage();
         } else {
+            config = {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    "Authorization" : cookies.login.data ,
+                },
+            };
             const data = boardIndex;
             const getDate = async () => {
                 try {
                     const response = await axios.get(
-                        `http://localhost:8080/api/v1/posts/${data}`
+                        `http://localhost:8080/api/v1/posts/${data}`, config
                     );
                     setTableContentData(response.data);
+                    setRealConfig(config);
+                    setLoading((prev) => true);
                 } catch (e) {
                     console.log(e);
                 }
@@ -38,8 +58,7 @@ const BoardContent = ({ location }) => {
         try {
             axios
                 .delete(
-                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
-                    tableContentData.pno
+                    `http://localhost:8080/api/v1/posts/${boardIndex}`, realConfig
                 )
                 .then((response) => {
                     history.push("/");
@@ -51,6 +70,12 @@ const BoardContent = ({ location }) => {
     };
 
     return (
+        <>
+        {
+        loading === false 
+        ? 
+        <div>로딩중.....</div>
+        :
         <div>
             <button onClick={goBackPage}>뒤로가기</button>
             <TableContentTable>
@@ -58,6 +83,7 @@ const BoardContent = ({ location }) => {
                     <tr>
                         <td>번호: {tableContentData.pno}</td>
                         <td>제목: {tableContentData.title}</td>
+                        <td>이메일: {tableContentData.email}</td>
                         <td>작성일/수정일: {tableContentData.modifiedDate}</td>
                         <td>조회수: {tableContentData.count}</td>
                     </tr>
@@ -68,11 +94,23 @@ const BoardContent = ({ location }) => {
                     </tr>
                 </tbody>
             </TableContentTable>
+
+        {
+            decode.sub === tableContentData.email 
+            ?
             <BtnWrap>
-                <BTN to={`/board/${params.id}/update`}>수정하기</BTN>
-                <BTN onClick={deleteBoard}>삭제하기</BTN>
+            <BTN to={`/board/${params.id}/update`}>수정하기</BTN>
+            {/* <BTN onClick={deleteBoard}>삭제하기</BTN> */}
+            <button onClick={deleteBoard}>삭제하기</button>
             </BtnWrap>
+            :
+            null
+
+        }
         </div>
+        }
+
+        </>
     );
 };
 

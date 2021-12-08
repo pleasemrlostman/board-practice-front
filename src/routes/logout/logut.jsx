@@ -1,29 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import axios from "axios";
+import { useCookies, setCookie } from "react-cookie";
 import { useHistory } from "react-router";
 import jwt_decode from "jwt-decode";
 
 const Logout = () => {
     const [cookies, removeCookie] = useCookies(["login"]);
     const [decode, setDecode] = useState("");
+    const [realCookies, setRealCookies] = useState({});
+    const [config, setConfig] = useState({});
     const history = useHistory();
+
+
+    let now = new Date();
+    let yesterday = new Date();
+
+    // function deleteCookie(cookieName){
+    //     var expireDate = new Date();
+    //     expireDate.setDate(expireDate.getDate() - 1); 
+    //     console.log(expireDate);
+    //     document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+    // }
 
     useEffect(() => {
         if(cookies.login === undefined) {
             console.log(cookies);
             console.log("현재 토큰 비어있다");
         } else {
-            console.log(cookies);
-            console.log(cookies.login);
+            setConfig(
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        "Authorization" : cookies.login.data ,
+                    },
+                }
+            )
+            setRealCookies(cookies.login);    
             setDecode(jwt_decode(cookies.login.data));
         }
-    }, [cookies])
+    }, [realCookies])
 
 
-    const sighOut = () => {
-        console.log("로그아웃");
-        alert("로그아웃이 완료됐습니다");
-        removeCookie("login");
+
+    const sighOut =  () => {
+        yesterday.setDate(now.getDate() - 1);
+        console.log(yesterday);
+        removeCookie("login", null , {
+            path: "/",
+            expires: yesterday,
+            httpOnly: false,
+        });
+        window.location.replace("/");
     }
 
     return (
