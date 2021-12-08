@@ -10,6 +10,7 @@ import Main from "routes/main/Main";
 import Social from "routes/oauth/callback/Social";
 import styled from "styled-components";
 import Logout from "routes/logout/logut";
+import Register from "routes/register/Register";
 
 function App() {
     return (
@@ -23,7 +24,7 @@ function App() {
                         게시판(리덕스사용O)
                     </StyledLink>
                 </StyledLinkWrap> */}
-                    <Logout />
+                <Logout />
                 <Switch>
                     <Route exact path="/" component={Main}></Route>
                     <Route exact path="/board/" component={Board}></Route>
@@ -43,6 +44,7 @@ function App() {
                         component={BoardUpdate}
                     ></Route>
                     <Route exact path="/api/v1/auth" component={Social}></Route>
+                    <Route exact path="/register" component={Register} />
                 </Switch>
             </Router>
         </AllWrap>
