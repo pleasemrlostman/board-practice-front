@@ -1,7 +1,8 @@
 import React from "react";
-
 import { useForm } from "react-hook-form";
 import { useState } from "react/cjs/react.development";
+import axios from "axios";
+
 
 const Register = () => {
     const {
@@ -13,8 +14,19 @@ const Register = () => {
 
     const [회원가입정보, set회원가입정보] = useState({});
 
+    const fetchRegistrationData = async (data) => {
+            console.log(data);
+            await axios.post("", data)
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        }
+
     const onSubmit = (data) => {
-        console.log(data);
+        fetchRegistrationData(data);
     };
     const onError = (error) => {
         console.log(error);
@@ -25,45 +37,44 @@ const Register = () => {
                 <div>
                     <input
                         type="text"
-                        placeholder="아이디작성"
-                        {...register("userID", {
-                            required: "아이디를 작성해주세요",
+                        placeholder="이름"
+                        {...register("name", {
+                            required: "이름을 작성해주세요",
                             minLength: {
-                                value: 5,
+                                value: 2,
                                 message:
-                                    "아이디를 5글자 이상으로 작성하셔야 합니다.",
+                                    "이름을 2글자 이상으로 작성하셔야 합니다.",
                             },
                             maxLength: {
-                                value: 12,
+                                value: 10,
                                 message:
-                                    "아이디를 12글자 이하로 작성하셔야 합니다.",
+                                    "이름을 10글자 이하로 작성하셔야 합니다.",
                             },
                         })}
                     />
-                    {errors?.userID?.message}
+                    {errors?.name?.message}
                 </div>
                 <div>
                     <input
                         type="text"
-                        placeholder="닉네임작성"
-                        {...register("nickname", {
-                            required: "닉네임을 작성해주세요",
-                            minLength: {
-                                value: 5,
-                                message:
-                                    "닉네임을 5글자 이상으로 작성하셔야 합니다.",
-                            },
-                            maxLength: {
-                                value: 12,
-                                message:
-                                    "닉네임을 12글자 이하로 작성하셔야 합니다.",
-                            },
+                        placeholder="주소작성"
+                        {...register("address", {
+                            required: "주소를 작성해주세요",
                         })}
                     />
-                    {errors?.nickname?.message}
+                    {errors?.address?.message}
                 </div>
-
                 <div>
+                    <input
+                        type="text"
+                        placeholder="핸드폰 번호 작성"
+                        {...register("phone", {
+                            required: "휴대폰 번호를 작성해주세요",
+                        })}
+                    />
+                    {errors?.phone?.message}
+                </div>
+                {/* <div>
                     <input
                         type="text"
                         placeholder="이메일작성"
@@ -91,7 +102,7 @@ const Register = () => {
                         type="password"
                         {...register("passwordCheck")}
                     />
-                </div>
+                </div> */}
                 <button>회원가입하기</button>
             </form>
         </div>
