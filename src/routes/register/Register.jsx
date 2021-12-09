@@ -14,27 +14,11 @@ const Register = () => {
     const [회원가입정보, set회원가입정보] = useState({});
 
     const onSubmit = (data) => {
-        if (아이디중복 === false) {
-            alert("아이디 중복확인을 받아주세요");
-        } else if (닉네임중복 === false) {
-            alert("닉네임 중복확인을 받아주세요");
-        } else if (이메일중복 === false) {
-            alert("이메일 중복확인을 받아주세요");
-        } else if (data.password !== data.passwordCheck) {
-            alert("비밀번호가 일치하지 않습니다.");
-        } else {
-            console.log(data);
-            alert("로그인 정보를 보냈습니다!");
-        }
+        console.log(data);
     };
     const onError = (error) => {
         console.log(error);
     };
-
-    const [아이디중복, set아이디중복확인] = useState(false);
-    const [닉네임중복, set닉네임중복확인] = useState(false);
-    const [이메일중복, set이메일중복확인] = useState(false);
-
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -56,13 +40,6 @@ const Register = () => {
                             },
                         })}
                     />
-                    <button
-                        onClick={() => {
-                            set아이디중복확인((prev) => !prev);
-                        }}
-                    >
-                        중복확인
-                    </button>
                     {errors?.userID?.message}
                 </div>
                 <div>
@@ -83,13 +60,6 @@ const Register = () => {
                             },
                         })}
                     />
-                    <button
-                        onClick={() => {
-                            set닉네임중복확인((prev) => !prev);
-                        }}
-                    >
-                        중복확인
-                    </button>
                     {errors?.nickname?.message}
                 </div>
 
@@ -106,7 +76,6 @@ const Register = () => {
                             },
                         })}
                     />
-                    <button>중복확인</button>
                     {errors?.userEmail?.message}
                 </div>
                 <div>
@@ -123,8 +92,8 @@ const Register = () => {
                         {...register("passwordCheck")}
                     />
                 </div>
+                <button>회원가입하기</button>
             </form>
-            <button>회원가입하기</button>
         </div>
     );
 };
