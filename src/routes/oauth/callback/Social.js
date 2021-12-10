@@ -46,10 +46,8 @@ const Social = () => {
                 }
             })
             .then(() => {
-                // 리턴값부재
                 dispatch(loginChange(true));
-                // history.push("/board");
-                window.location.replace("/board")
+                window.location.replace("/board");
             })
             .catch((error) => console.log(error));
     }, [code]);

@@ -1,39 +1,68 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useState } from "react/cjs/react.development";
+import { useEffect, useState } from "react/cjs/react.development";
 import axios from "axios";
+import { useCookies, setCookie } from "react-cookie";
+import { useHistory } from "react-router";
 
 
 const Register = () => {
+    const history = useHistory()
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm();
-
     const [회원가입정보, set회원가입정보] = useState({});
-
     const fetchRegistrationData = async (data) => {
             console.log(data);
-            await axios.post("", data)
+            console.log(token);
+            await axios.post("http://localhost:8080/api/v1/user", data, config)
             .then((response) => {
                 console.log(response);
+                history.replace("/board");
             })
             .catch((err) => {
                 console.log(err);
             })
         }
-
     const onSubmit = (data) => {
         fetchRegistrationData(data);
     };
     const onError = (error) => {
         console.log(error);
     };
+    const [cookies] = useCookies(["login"]);
+    const [token, setToken] = useState({});
+    const [config, setConfig] = useState({});
+
+    useEffect(() => {
+        console.log(cookies);      
+        if(cookies.login !== undefined ){
+            setToken(cookies.login.data);
+            setConfig(
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        "Authorization" : cookies.login.data ,
+                    },
+                }
+            )
+        } 
+    }
+    ,[])
+
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit, onError)}>
+            {
+                cookies.login === undefined
+                ? <div>토큰이 없으므로 로그인 해주시길 바랍니다 
+                    <button onClick={() => {
+                    history.push("/");
+                }}>로그인창으로 돌아가기</button></div> 
+                :             
+                <form onSubmit={handleSubmit(onSubmit, onError)}>
                 <div>
                     <input
                         type="text"
@@ -104,7 +133,8 @@ const Register = () => {
                     />
                 </div> */}
                 <button>회원가입하기</button>
-            </form>
+            </form> 
+            }
         </div>
     );
 };
