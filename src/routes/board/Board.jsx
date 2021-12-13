@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { Cookies, CookiesProvider, useCookies } from "react-cookie";
+import { checkCookie } from "modules/cookies/cookies";
+import { getDate } from "modules/cookies/cookies";
 
 const Board = () => {
     const [tableData, setTableData] = useState([]);
@@ -41,44 +43,12 @@ const Board = () => {
         window.location.replace("/");
     }
 
+    const APIURL = "http://localhost:8080/api/v1/posts"
+
 
     useEffect(() => {
-        let config = {};
-        console.log(cookies)
-        if(cookies === null) {
-            alert("로그인해라 세훈아")
-            history.push("/")
-        } else {
-            config = {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    "Authorization" : cookies === null ? null : cookies.login.data ,
-                },
-            };
-        }
-        const getDate = async () => {            
-            try {
-                const response = await axios
-                .get("http://localhost:8080/api/v1/posts", config)
-                .then((response) => {
-                    if(response.headers.status === "tokenInvalid") {
-                        sighOut();
-                        alert("로그인좀해라~~~~");
-                        window.location.replace("/")
-                    } else if (response.headers.status === "roleInvalid") {
-                        alert("회원가입좀해라~~~~~");
-                        history.push("/register");
-                    } else {
-                        console.log("인벨리드아님")
-                        setTableData(response.data);
-                    }
-
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        };
-        getDate();
+        let config = checkCookie(cookies);
+        getDate(APIURL, config, sighOut, setTableData);
     }, []);
 
     return (
@@ -96,13 +66,14 @@ const Board = () => {
                 </thead>
                 <tbody>
                     {currentPosts(tableData).map((value, index) => {
+                        console.log(value);
                         return (
                             <tr key={index}>
-                                <td>{value.pno}</td>
+                                <td>{value.postSeq}</td>
                                 <td>
                                     <StyledLink
                                         to={{
-                                            pathname: `/board/${value.pno}`,
+                                            pathname: `/board/${value.postSeq}`,
                                             state: {
                                                 value: value,
                                             },

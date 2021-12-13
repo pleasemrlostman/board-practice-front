@@ -15,13 +15,6 @@ const Logout = () => {
     let now = new Date();
     let yesterday = new Date();
 
-    // function deleteCookie(cookieName){
-    //     var expireDate = new Date();
-    //     expireDate.setDate(expireDate.getDate() - 1); 
-    //     console.log(expireDate);
-    //     document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
-    // }
-
     useEffect(() => {
         if(cookies.login === undefined) {
             console.log(cookies);
