@@ -37,7 +37,7 @@ const BoardContent = ({ location }) => {
             goBackPage();
         } else {
             const APIURL__POST = `http://localhost:8080/api/v1/posts/${boardIndex}`;
-            setDecode(jwt_decode(cookies.login.data));
+            setDecode(jwt_decode(cookies.login.data.jwt));
             let config = checkCookie(cookies);
             setRealConfig(config);
             checkToken(APIURL__POST, config, logOut, setTableContentData);

@@ -21,6 +21,7 @@ const Logout = () => {
     useEffect(() => {
         if (cookies.login !== undefined) {
             setRealCookies(cookies.login);
+            console.log(cookies.login.data.jwt);
             setDecode(jwt_decode(cookies.login.data.jwt));
             setUserLogged(true);
         } else {

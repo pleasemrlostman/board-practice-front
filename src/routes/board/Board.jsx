@@ -11,7 +11,7 @@ import {
 } from "modules/cookies/cookies";
 
 const Board = () => {
-    const [cookies, setCookie, removeCookie] = useCookies(["login"]);
+    const [cookies, removeCookie] = useCookies(["login"]);
     const [tableData, setTableData] = useState([]);
     const [currnetPage, setCurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(5);
@@ -40,7 +40,11 @@ const Board = () => {
     useEffect(() => {
         let config = checkCookie(cookies);
         let refresh = getRefresh(cookies);
-        checkToken(APIURL__POST, config, logOut, setTableData, refresh);
+        if (config === {}) {
+            return;
+        } else {
+            checkToken(APIURL__POST, config, logOut, setTableData, refresh);
+        }
     }, []);
 
     return (
