@@ -1,16 +1,15 @@
-import React from "react";
-import { useEffect, useState } from "react/cjs/react.development";
-import axios from "axios";
-import { useParams } from "react-router";
-import { useHistory } from "react-router";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { useCookies, setCookie } from "react-cookie";
-
+import axios from "axios";
+import { useParams, useHistory } from "react-router";
+import { useCookies } from "react-cookie";
+import { checkCookie, checkToken } from "modules/cookies/cookies";
 
 const BoardUpdate = () => {
     const params = useParams();
-    const [data, setData] = useState({});
+    const boardIndex = params.id;
+    const [allData, setAllData] = useState({});
+    // const [data, setData] = useState({});
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [postData, setPostData] = useState({
@@ -18,24 +17,8 @@ const BoardUpdate = () => {
         content: content,
         count: 0,
     });
-    const [config, setConfig] = useState({});
+    const [realConfig, setRealConfig] = useState({});
     const [cookies, removeCookie] = useCookies(["login"]);
-
-    useEffect(() => {
-        if(cookies.login !== undefined) {
-            setConfig(
-                {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        "Authorization" : cookies.login.data ,
-                    },
-                }
-            )
-
-        }
-    }
-    , [])
-
     const history = useHistory();
     const titleChange = (e) => {
         const {
@@ -56,62 +39,63 @@ const BoardUpdate = () => {
             return { ...prev, content: value };
         });
     };
-
     const onSubmit = (e) => {
         e.preventDefault();
         dataUpdate();
     };
-
-    const accessToken = useSelector((state) => state.loginChangeReducer);
-
-
     const dataUpdate = async () => {
         try {
             axios
                 .put(
-                    `http://localhost:8080/api/v1/posts/${params.id}`, postData, config)
+                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
+                    postData,
+                    realConfig
+                )
                 .then((response) => {
                     alert("수정이 완료됐습니다!");
                     history.push("/board");
-                    console.log(response);
                 });
         } catch (e) {
             console.log(e);
         }
     };
-
     const deleteBoard = async () => {
         try {
             axios
                 .delete(
-                    `http://192.168.0.21:3000/api/v1/posts/${params.id}`,
-                    data.pno
+                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
+                    realConfig
                 )
                 .then((response) => {
-                    alert("삭제가 완료됐습니다!");
+                    alert("삭제가 완료됐습니다!~~~~~~");
                     history.push("/board");
-                    console.log(response);
                 });
         } catch (e) {
             console.log(e);
         }
     };
-
+    const logOut = () => {
+        let now = new Date();
+        let yesterday = new Date();
+        yesterday.setDate(now.getDate() - 1);
+        removeCookie("login", null, {
+            path: "/",
+            expires: yesterday,
+            httpOnly: false,
+        });
+        window.location.replace("/");
+    };
+    const dataScatter = (allData) => {
+        setTitle(allData.title);
+        setContent(allData.content);
+        setPostData(allData);
+    };
     useEffect(() => {
-        const getDate = async () => {
-            try {
-                const response = await axios.get(
-                    `http://192.168.0.21:3000/api/v1/posts/${params.id}`
-                );
-                setData(response.data);
-                setTitle(response.data.title);
-                setContent(response.data.content);
-                setPostData(response.data);
-            } catch (e) {
-                console.log(e);
-            }
-        };
-        getDate();
+        const APIURL__POST = `http://localhost:8080/api/v1/posts/${boardIndex}`;
+        let config = checkCookie(cookies);
+        setRealConfig(config);
+        checkToken(APIURL__POST, config, logOut, setAllData);
+        dataScatter(allData);
     }, []);
 
     return (
@@ -137,7 +121,6 @@ const BoardUpdate = () => {
 };
 
 export default BoardUpdate;
-
 const BTN = styled.button`
     display: block;
     width: fit-content;

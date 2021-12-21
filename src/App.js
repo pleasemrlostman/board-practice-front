@@ -44,23 +44,8 @@ function App() {
 }
 
 export default App;
-const StyledLinkWrap = styled.div`
-    border: 1px solid red;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-`;
-
-const StyledLink = styled(Link)`
-    border: 1px solid #337aee;
-    background-color: #337aee;
-    color: #fff;
-    padding: 10px;
-    text-decoration: none;
-`;
-
 const AllWrap = styled.div`
-    border: 1px solid blue;
     max-width: 1440px;
     margin: auto;
+    padding: 1rem;
 `;

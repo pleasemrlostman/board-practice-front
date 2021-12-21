@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
-
+import { checkCookie, checkToken, APIURL__POST } from "modules/cookies/cookies";
 
 const BoardWrite = () => {
-    const history = useHistory();
+    const [cookies, setCookie, removeCookie] = useCookies(["login"]);
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [postData, setPostData] = useState({
@@ -14,49 +13,39 @@ const BoardWrite = () => {
         content: content,
         count: 0,
     });
+    const [realConfig, setRealConfig] = useState({});
+    const history = useHistory();
     const titleChange = (e) => {
         const {
             target: { value },
         } = e;
-        console.log(value);
         setTitle(value);
         setPostData((prev) => {
             return { ...prev, title: value };
         });
     };
-    const ContentChange = (e) => {
+    const contentChange = (e) => {
         const {
             target: { value },
         } = e;
-        console.log(value);
         setContent(value);
         setPostData((prev) => {
             return { ...prev, content: value };
         });
     };
-
     const onSubmit = (e) => {
         e.preventDefault();
         post();
     };
-    
-    const accessToken = useSelector((state) => state.loginChangeReducer);
-    const [cookies] = useCookies(["login"]);
-    let config = {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            "Authorization" : cookies.login.data ,
-        },
-    };
-
     const post = async () => {
         try {
             axios
-                .post("http://localhost:8080/api/v1/posts", postData, config)
+                .post(
+                    "http://localhost:8080/api/v1/posts",
+                    postData,
+                    realConfig
+                )
                 .then((response) => {
-                    console.log(response);
-                })
-                .then(() => {
                     alert("글 작성이 완료됐습니다");
                     history.push("/board");
                 });
@@ -64,6 +53,23 @@ const BoardWrite = () => {
             console.log(e);
         }
     };
+    const logOut = () => {
+        let now = new Date();
+        let yesterday = new Date();
+        yesterday.setDate(now.getDate() - 1);
+        removeCookie("login", null, {
+            path: "/",
+            expires: yesterday,
+            httpOnly: false,
+        });
+        window.location.replace("/");
+    };
+    useEffect(() => {
+        let config = checkCookie(cookies);
+        setRealConfig(config);
+        checkToken(APIURL__POST, config, logOut, null);
+        return () => {};
+    }, []);
 
     return (
         <form onSubmit={onSubmit}>
@@ -76,12 +82,11 @@ const BoardWrite = () => {
             <input
                 type="text"
                 placeholder="내용을 입력해주세요"
-                onChange={ContentChange}
+                onChange={contentChange}
                 value={content}
             />
             <input type="submit" value="전송하기" />
         </form>
     );
 };
-
 export default BoardWrite;

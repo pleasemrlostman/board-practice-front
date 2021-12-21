@@ -1,54 +1,46 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import { Cookies, CookiesProvider, useCookies } from "react-cookie";
-import { checkCookie } from "modules/cookies/cookies";
-import { getDate } from "modules/cookies/cookies";
+import { useCookies } from "react-cookie";
+import {
+    checkCookie,
+    checkToken,
+    getRefresh,
+    APIURL__POST,
+} from "modules/cookies/cookies";
 
 const Board = () => {
+    const [cookies, setCookie, removeCookie] = useCookies(["login"]);
     const [tableData, setTableData] = useState([]);
-    const [initTableData, setInitTableData] = useState([]);
     const [currnetPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(30);
+    const [postPerPage, setPostPerPage] = useState(5);
     const indexOfLast = currnetPage * postPerPage; //  1 * 10 = 10
     const indexOfFirst = indexOfLast - postPerPage; // 10 - 10 = 0
-
     const currentPosts = (tmp) => {
         let currentPosts = 0;
         currentPosts = tmp.slice(indexOfFirst, indexOfLast);
         return currentPosts;
     };
-
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(tableData.length / postPerPage); i++) {
         pageNumbers.push(i);
     }
-    const history = useHistory();
-    const accessToken = useSelector((state) => state.loginChangeReducer);
-    const [cookies, setCookie, removeCookie] = useCookies(["login"]);    
-    let now = new Date();
-    let yesterday = new Date();
-
-    const sighOut =  () => {
+    const logOut = () => {
+        let now = new Date();
+        let yesterday = new Date();
         yesterday.setDate(now.getDate() - 1);
-        removeCookie("login", null , {
+        removeCookie("login", null, {
             path: "/",
             expires: yesterday,
             httpOnly: false,
         });
         window.location.replace("/");
-    }
-
-    const APIURL = "http://localhost:8080/api/v1/posts"
-
-
+    };
     useEffect(() => {
         let config = checkCookie(cookies);
-        getDate(APIURL, config, sighOut, setTableData);
+        let refresh = getRefresh(cookies);
+        checkToken(APIURL__POST, config, logOut, setTableData, refresh);
     }, []);
 
     return (
@@ -66,7 +58,6 @@ const Board = () => {
                 </thead>
                 <tbody>
                     {currentPosts(tableData).map((value, index) => {
-                        console.log(value);
                         return (
                             <tr key={index}>
                                 <td>{value.postSeq}</td>
@@ -98,7 +89,6 @@ const Board = () => {
                 totalItemsCount={tableData.length}
                 pageRangeDisplayed={currentPosts(tableData).length}
                 onChange={(page) => {
-                    console.log(page);
                     setCurrentPage(page);
                 }}
             ></Pagination>
@@ -146,11 +136,9 @@ const FrontTable = styled.table`
         }
     }
 `;
-
 const TableButtonWrap = styled.div`
     border: 1px solid red;
 `;
-
 const StyledLink = styled(Link)`
     width: 100%;
     display: block;

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react/cjs/react.development";
 import axios from "axios";
 import { useCookies, setCookie } from "react-cookie";
 import { useHistory } from "react-router";
+import { checkCookie } from "modules/cookies/cookies";
 
 
 const Register = () => {
@@ -14,42 +15,34 @@ const Register = () => {
         watch,
         formState: { errors },
     } = useForm();
+    const [cookies] = useCookies(["login"]);
+    const [token, setToken] = useState({});
+    const [config, setConfig] = useState({});
     const [회원가입정보, set회원가입정보] = useState({});
-    const fetchRegistrationData = async (data) => {
-            console.log(data);
-            console.log(token);
+    const fetchRegistrationData = async (data, config) => {
             await axios.post("http://localhost:8080/api/v1/user", data, config)
             .then((response) => {
+                console.log(data);
                 console.log(response);
+                alert("회원가입이 완료됐습니다");
                 history.replace("/board");
             })
             .catch((err) => {
+                console.log("안가고있음");
                 console.log(err);
             })
         }
     const onSubmit = (data) => {
-        fetchRegistrationData(data);
+        fetchRegistrationData(data, config);
     };
     const onError = (error) => {
         console.log(error);
     };
-    const [cookies] = useCookies(["login"]);
-    const [token, setToken] = useState({});
-    const [config, setConfig] = useState({});
+
 
     useEffect(() => {
-        console.log(cookies);      
-        if(cookies.login !== undefined ){
-            setToken(cookies.login.data);
-            setConfig(
-                {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        "Authorization" : cookies.login.data ,
-                    },
-                }
-            )
-        } 
+        let returnConfig = checkCookie(cookies);
+        setConfig(returnConfig);
     }
     ,[])
 
@@ -103,35 +96,6 @@ const Register = () => {
                     />
                     {errors?.phone?.message}
                 </div>
-                {/* <div>
-                    <input
-                        type="text"
-                        placeholder="이메일작성"
-                        {...register("userEmail", {
-                            required: "아이디(이메일)을 작성해주세요",
-                            pattern: {
-                                // value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                value: /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i,
-                                message: "유효하지 않은 이메일 형식입니다.",
-                            },
-                        })}
-                    />
-                    {errors?.userEmail?.message}
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        placeholder="비밀번호입력"
-                        {...register("password")}
-                    />
-                </div>
-                <div>
-                    <input
-                        placeholder="비밀번호재입력"
-                        type="password"
-                        {...register("passwordCheck")}
-                    />
-                </div> */}
                 <button>회원가입하기</button>
             </form> 
             }
