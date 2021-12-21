@@ -16,14 +16,6 @@ function App() {
     return (
         <AllWrap>
             <Router>
-                {/* <StyledLinkWrap>
-                    <StyledLink to="/board">
-                        게시판(리덕스 및 리액트 훅 폼 사용 x)
-                    </StyledLink>
-                    <StyledLink to="/board-redux">
-                        게시판(리덕스사용O)
-                    </StyledLink>
-                </StyledLinkWrap> */}
                 <Logout />
                 <Switch>
                     <Route exact path="/" component={Main}></Route>
