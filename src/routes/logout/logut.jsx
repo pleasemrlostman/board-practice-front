@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
+import { checkCookie, getRefresh } from "modules/cookies/cookies";
+import { useSelector, useDispatch } from "react-redux";
+import { saveConfig } from "modules/config/config";
 const Logout = () => {
     const [cookies, removeCookie] = useCookies(["login"]);
     const [decode, setDecode] = useState("");
     const [realCookies, setRealCookies] = useState({});
     const [userLogged, setUserLogged] = useState(false);
+    const dispatch = useDispatch();
     const sighOut = () => {
         let now = new Date();
         let yesterday = new Date();
@@ -21,9 +25,15 @@ const Logout = () => {
     useEffect(() => {
         if (cookies.login !== undefined) {
             setRealCookies(cookies.login);
-            console.log(cookies.login.data.jwt);
+            const config = checkCookie(cookies);
             setDecode(jwt_decode(cookies.login.data.jwt));
             setUserLogged(true);
+            console.log(config);
+            const loginInformation = {
+                loginStatus: userLogged,
+                config: config,
+            };
+            dispatch(saveConfig(loginInformation));
         } else {
             console.log("현재 쿠키에 아무것도 담겨있지 않음");
             setUserLogged(false);

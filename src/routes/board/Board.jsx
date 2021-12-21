@@ -9,6 +9,7 @@ import {
     getRefresh,
     APIURL__POST,
 } from "modules/cookies/cookies";
+import { useSelector } from "react-redux";
 
 const Board = () => {
     const [cookies, removeCookie] = useCookies(["login"]);
@@ -37,6 +38,8 @@ const Board = () => {
         });
         window.location.replace("/");
     };
+    let sample = useSelector((state) => state.saveConfigReducer.config);
+
     useEffect(() => {
         let config = checkCookie(cookies);
         let refresh = getRefresh(cookies);
