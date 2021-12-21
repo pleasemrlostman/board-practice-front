@@ -63,11 +63,11 @@ const BoardUpdate = () => {
         try {
             axios
                 .delete(
-                    `http://192.168.0.21:3000/api/v1/posts/${boardIndex}`,
-                    allData.pno
+                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
+                    realConfig
                 )
                 .then((response) => {
-                    alert("삭제가 완료됐습니다!");
+                    alert("삭제가 완료됐습니다!~~~~~~");
                     history.push("/board");
                 });
         } catch (e) {
@@ -97,23 +97,6 @@ const BoardUpdate = () => {
         checkToken(APIURL__POST, config, logOut, setAllData);
         dataScatter(allData);
     }, []);
-
-    // useEffect(() => {
-    //     const getDate = async () => {
-    //         try {
-    //             const response = await axios.get(
-    //                 `http://192.168.0.21:3000/api/v1/posts/${params.id}`
-    //             );
-    //             setData(response.data);
-    //             setTitle(response.data.title);
-    //             setContent(response.data.content);
-    //             setPostData(response.data);
-    //         } catch (e) {
-    //             console.log(e);
-    //         }
-    //     };
-    //     getDate();
-    // }, []);
 
     return (
         <>

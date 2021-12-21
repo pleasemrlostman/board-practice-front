@@ -21,7 +21,7 @@ const Logout = () => {
     useEffect(() => {
         if (cookies.login !== undefined) {
             setRealCookies(cookies.login);
-            setDecode(jwt_decode(cookies.login.data));
+            setDecode(jwt_decode(cookies.login.data.jwt));
             setUserLogged(true);
         } else {
             console.log("현재 쿠키에 아무것도 담겨있지 않음");
@@ -34,7 +34,7 @@ const Logout = () => {
                 <LogOutWrap>로그인해주세요</LogOutWrap>
             ) : (
                 <>
-                    <span>{decode.sub}</span>님 환영합니다{" "}
+                    <span>{decode.sub}</span>님 환영합니다
                     <button onClick={sighOut}>로그아웃</button>
                 </>
             )}

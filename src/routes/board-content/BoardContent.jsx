@@ -41,44 +41,8 @@ const BoardContent = ({ location }) => {
             let config = checkCookie(cookies);
             setRealConfig(config);
             checkToken(APIURL__POST, config, logOut, setTableContentData);
-            // if(tableContentData.pno !== undefined) {
-            //     boardIndex값이 api로 가져온 배열값과 다르면 요청하신 페이지가 없다고 보여줘야한다
-            // } else {
-            // setLoading(true);
-            // }
             setLoading(true);
         }
-
-        // if (cookies.login !== undefined) {
-        //     setDecode(jwt_decode(cookies.login.data));
-        // }
-        // if (boardIndex === undefined) {
-        //     alert("해당되는 페이지가 없습니다.");
-        //     goBackPage();
-        // } else {
-        //     const data = boardIndex;
-        //     config = {
-        //         headers: {
-        //             "Access-Control-Allow-Origin": "*",
-        //             Authorization: cookies.login.data,
-        //         },
-        //     };
-        //     const getDate = async () => {
-        //         try {
-        //             const response = await axios.get(
-        //                 `http://localhost:8080/api/v1/posts/${data}`,
-        //                 config
-        //             );
-        //             setTableContentData(response.data);
-        //             setRealConfig(config);
-        //             setLoading((prev) => true);
-        //         } catch (e) {
-        //             console.log(e);
-        //         }
-        //     };
-        //     getDate();
-        //     setTableContentData(data);
-        // }
     }, []);
 
     const deleteBoard = async () => {
@@ -92,7 +56,7 @@ const BoardContent = ({ location }) => {
                 )
                 .then((response) => {
                     alert("삭제가 완료됐습니다!");
-                    history.push("/");
+                    history.push("/board");
                 });
         } catch (e) {
             console.log(e);
@@ -109,7 +73,7 @@ const BoardContent = ({ location }) => {
                     <TableContentTable>
                         <thead>
                             <tr>
-                                <td>번호: {tableContentData.pno}</td>
+                                <td>번호: {tableContentData.postSeq}</td>
                                 <td>제목: {tableContentData.title}</td>
                                 <td>이메일: {tableContentData.email}</td>
                                 <td>

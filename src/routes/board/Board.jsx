@@ -3,7 +3,12 @@ import styled from "styled-components";
 import Pagination from "react-js-pagination";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { checkCookie, checkToken, APIURL__POST } from "modules/cookies/cookies";
+import {
+    checkCookie,
+    checkToken,
+    getRefresh,
+    APIURL__POST,
+} from "modules/cookies/cookies";
 
 const Board = () => {
     const [cookies, setCookie, removeCookie] = useCookies(["login"]);
@@ -34,7 +39,8 @@ const Board = () => {
     };
     useEffect(() => {
         let config = checkCookie(cookies);
-        checkToken(APIURL__POST, config, logOut, setTableData);
+        let refresh = getRefresh(cookies);
+        checkToken(APIURL__POST, config, logOut, setTableData, refresh);
     }, []);
 
     return (

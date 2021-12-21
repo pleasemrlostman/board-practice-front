@@ -20,7 +20,7 @@ const Main = () => {
                         NaverLogin
                     </a>
                     <a
-                        href="https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&access_type=offline"
+                        href="https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
                         role="button"
                     >
                         GoogleLogin
