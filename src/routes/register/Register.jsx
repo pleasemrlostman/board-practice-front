@@ -25,7 +25,7 @@ const Register = () => {
                 console.log(data);
                 console.log(response);
                 alert("회원가입이 완료됐습니다");
-                history.replace("/board");
+                window.location.replace("/board");
             })
             .catch((err) => {
                 console.log("안가고있음");

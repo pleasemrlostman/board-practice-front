@@ -1,33 +1,85 @@
 import React from "react";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
+import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
 const Main = () => {
-    const [cookies] = useCookies(["login"]);
+    let expireDate = new Date();
+    const [cookies, setCookie, removeCookie] = useCookies(["loginState"]);
+    const loginStatus = useSelector(
+        (state) => state.saveConfigReducer.loginStatus
+    );
+    const loginSiteInformation = [
+        {
+            site: "kakao",
+            href: "https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&state=",
+            text: "카카오 로그인",
+        },
+        {
+            site: "naver",
+            href: "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=_I5ydV36uupFgCHdJ_1x&redirect_uri=http://localhost:3000/api/v1/auth&state=",
+            text: "네이버 로그인",
+        },
+        {
+            site: "google",
+            href: "https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&prompt=consent&access_type=offline&state=",
+            text: "구글 로그인",
+        },
+    ];
+
+    const 로그인함수 = (siteInfor) => {
+        expireDate.setMinutes(new Date().getMinutes() + 5);
+        setCookie("loginState", siteInfor, {
+            path: "/",
+            expires: expireDate,
+            httpOnly: false,
+        });
+        window.location.replace(`${siteInfor.href}${siteInfor.uuid}`);
+    };
+
     return (
         <>
-            {cookies.login === undefined ? (
+            {!loginStatus ? (
                 <StyledMain>
-                    <a
-                        href="https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&state=kakao"
+                    {/* <a
+                        href={`https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&state=${sample}`}
                         role="button"
                     >
                         KakaoLogin
                     </a>
                     <a
-                        href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=_I5ydV36uupFgCHdJ_1x&redirect_uri=http://localhost:3000/api/v1/auth&state=naver"
+                        href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=_I5ydV36uupFgCHdJ_1x&redirect_uri=http://localhost:3000/api/v1/auth&state=${sample}`}
                         role="button"
                     >
                         NaverLogin
                     </a>
                     <a
-                        href="https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&prompt=consent&access_type=offline"
+                        href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&prompt=consent&access_type=offline&state=${sample}`}
                         role="button"
                     >
                         GoogleLogin
-                    </a>
+                    </a> */}
+                    {loginSiteInformation.map((value, id) => {
+                        return (
+                            <button
+                                onClick={() => {
+                                    const uuid = uuidv4();
+                                    const clickedButtonInformation = {
+                                        href: value.href,
+                                        siteName: value.site,
+                                        uuid,
+                                    };
+                                    로그인함수(clickedButtonInformation);
+                                }}
+                                key={id}
+                            >
+                                {value.text}
+                            </button>
+                        );
+                    })}
                 </StyledMain>
             ) : (
-                <div>로그인!</div>
+                <div>현재 로그인이 완료된 상태입니다.</div>
             )}
         </>
     );

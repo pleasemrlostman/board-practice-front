@@ -39,8 +39,8 @@ const Board = () => {
         window.location.replace("/");
     };
     let sample = useSelector((state) => state.saveConfigReducer.config);
-
     useEffect(() => {
+        console.log(cookies.loginState);
         let config = checkCookie(cookies);
         let refresh = getRefresh(cookies);
         if (config === {}) {

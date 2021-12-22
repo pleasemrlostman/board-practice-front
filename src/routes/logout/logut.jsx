@@ -28,7 +28,6 @@ const Logout = () => {
             const config = checkCookie(cookies);
             setDecode(jwt_decode(cookies.login.data.jwt));
             setUserLogged(true);
-            console.log(config);
             const loginInformation = {
                 loginStatus: userLogged,
                 config: config,
