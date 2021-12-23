@@ -47,7 +47,7 @@ const BoardUpdate = () => {
         try {
             axios
                 .put(
-                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
+                    `https://localhost:8080/api/v1/posts/${boardIndex}`,
                     postData,
                     realConfig
                 )
@@ -63,7 +63,7 @@ const BoardUpdate = () => {
         try {
             axios
                 .delete(
-                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
+                    `https://localhost:8080/api/v1/posts/${boardIndex}`,
                     realConfig
                 )
                 .then((response) => {
@@ -91,7 +91,7 @@ const BoardUpdate = () => {
         setPostData(allData);
     };
     useEffect(() => {
-        const APIURL__POST = `http://localhost:8080/api/v1/posts/${boardIndex}`;
+        const APIURL__POST = `https://localhost:8080/api/v1/posts/${boardIndex}`;
         let config = checkCookie(cookies);
         setRealConfig(config);
         checkToken(APIURL__POST, config, logOut, setAllData);

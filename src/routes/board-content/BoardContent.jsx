@@ -36,7 +36,7 @@ const BoardContent = ({ location }) => {
             alert("해당되는 페이지가 없습니다.");
             goBackPage();
         } else {
-            const APIURL__POST = `http://localhost:8080/api/v1/posts/${boardIndex}`;
+            const APIURL__POST = `https://localhost:8080/api/v1/posts/${boardIndex}`;
             setDecode(jwt_decode(cookies.login.data.jwt));
             let config = checkCookie(cookies);
             setRealConfig(config);
@@ -51,7 +51,7 @@ const BoardContent = ({ location }) => {
         try {
             axios
                 .delete(
-                    `http://localhost:8080/api/v1/posts/${boardIndex}`,
+                    `https://localhost:8080/api/v1/posts/${boardIndex}`,
                     realConfig
                 )
                 .then((response) => {

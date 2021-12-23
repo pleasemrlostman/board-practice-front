@@ -20,7 +20,7 @@ const Register = () => {
     const [config, setConfig] = useState({});
     const [회원가입정보, set회원가입정보] = useState({});
     const fetchRegistrationData = async (data, config) => {
-            await axios.post("http://localhost:8080/api/v1/user", data, config)
+            await axios.post("https://localhost:8080/api/v1/user", data, config)
             .then((response) => {
                 console.log(data);
                 console.log(response);

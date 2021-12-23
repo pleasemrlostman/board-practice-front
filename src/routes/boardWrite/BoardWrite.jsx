@@ -41,7 +41,7 @@ const BoardWrite = () => {
         try {
             axios
                 .post(
-                    "http://localhost:8080/api/v1/posts",
+                    "https://localhost:8080/api/v1/posts",
                     postData,
                     realConfig
                 )

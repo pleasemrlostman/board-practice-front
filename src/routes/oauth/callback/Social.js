@@ -35,7 +35,7 @@ const Social = () => {
 
             axios
                 .get(
-                    `http://localhost:8080/api/v1/auth?&code=${code}&provider=${cookies.loginState.siteName}`,
+                    `https://localhost:8080/api/v1/auth?&code=${code}&provider=${cookies.loginState.siteName}`,
                     config
                 )
                 .then((token) => {
