@@ -34,7 +34,8 @@ const Board = () => {
         removeCookie("login", null, {
             path: "/",
             expires: yesterday,
-            httpOnly: false,
+            httpOnly: true,
+            secure: true,
         });
         window.location.replace("/");
     };

@@ -32,7 +32,8 @@ const Main = () => {
         setCookie("loginState", siteInfor, {
             path: "/",
             expires: expireDate,
-            httpOnly: false,
+            httpOnly: true,
+            secure: true,
         });
         window.location.replace(`${siteInfor.href}${siteInfor.uuid}`);
     };

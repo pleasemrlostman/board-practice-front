@@ -20,6 +20,8 @@ const Social = () => {
         setCookie(cookieName, null, {
             path: "/",
             expires: expireDate,
+            httpOnly: true,
+            secure: true,
         });
     };
 
