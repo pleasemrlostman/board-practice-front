@@ -13,17 +13,30 @@ const Main = () => {
         {
             site: "kakao",
             href: "https://kauth.kakao.com/oauth/authorize?client_id=2ee064b6d89247a54fe4def4ca8e79ee&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&state=",
-            text: "카카오 로그인",
+            text: "카카오톡으로 시작하기",
+            component: "LoginKakaoLogo",
+            alt="카카오톡 로고"
         },
         {
             site: "naver",
             href: "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=_I5ydV36uupFgCHdJ_1x&redirect_uri=http://localhost:3000/api/v1/auth&state=",
-            text: "네이버 로그인",
+            text: "네이버로 시작하기",
+            component: "LoginNaverLogo",
+            alt="네이버 로고"
         },
         {
             site: "google",
             href: "https://accounts.google.com/o/oauth2/v2/auth?client_id=916610963822-dr1b5jcj7d08urko9fmj4egh1m55fim1.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/v1/auth&response_type=code&scope=email%20profile&prompt=consent&access_type=offline&state=",
-            text: "구글 로그인",
+            text: "구글로 시작하기",
+            component: "LoginGoogleLogo",
+            alt="구글로고 로고"
+        },
+        {
+            site: "facebook",
+            href: "",
+            text: "페이스북으로 시작하기",
+            component: "LoginFacebookLogo",
+            alt="페이스북 로고"
         },
     ];
 
