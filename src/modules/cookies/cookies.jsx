@@ -66,9 +66,8 @@ const checkToken = async (
             }
         });
     } catch (err) {
-        alert("제발 ~~~")
+        alert("제발 ~~~");
         alert(err);
     }
 };
-
 export { checkCookie, checkToken, getRefresh, APIURL__POST };
